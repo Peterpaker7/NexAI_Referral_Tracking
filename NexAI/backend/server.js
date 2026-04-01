@@ -8,8 +8,12 @@ const app = express();
 app.use(cors({ origin:["http://localhost:3000","http://127.0.0.1:3000"], methods:["GET","POST","PUT","DELETE","PATCH"], credentials:true }));
 app.use(express.json());
 
-const pool = new Pool({ connectionString: process.env.DATABASE_URL || 'postgresql://localhost:5432/nexai' });
-pool.connect(err => { if(err) console.error('DB error:',err.message); else console.log('✅ Connected to PostgreSQL'); });
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false
+  }
+});
 
 // ════════════════════════════════
 // RISK ENGINE — pure function, no DB storage
