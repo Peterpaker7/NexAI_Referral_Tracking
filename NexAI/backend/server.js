@@ -6,15 +6,12 @@ require('dotenv').config();
 
 const app = express();
 
-// CORS configuration - Allow your Vercel frontend
-const allowedOrigins = [
-  "http://localhost:3000",
-  "http://127.0.0.1:3000",
-  "https://nexaireferraltracking1-5f6a82v8z-peterpaker7s-projects.vercel.app",
-  "https://nexaireferraltracking1-pivpwr485-peterpaker7s-projects.vercel.app",
-  "https://nexaireferraltracking1-amxbs9b50-peterpaker7s-projects.vercel.app",
-  /\.vercel\.app$/  // Allow all Vercel preview URLs
-];
+// CORS configuration - Allow all origins (temporary fix)
+app.use(cors({
+  origin: true,  // This allows any origin
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+  credentials: true
+}));;
 
 app.use(cors({
   origin: function(origin, callback) {
