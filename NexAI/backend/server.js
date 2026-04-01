@@ -11,7 +11,9 @@ app.use(cors({
   origin: [
     "http://localhost:3000", 
     "http://127.0.0.1:3000",
-    "https://nexaireferraltracking1-pivpwr485-peterpaker7s-projects.vercel.app/"  // ← Your Vercel URL
+    "https://nexaireferraltracking1-pivpwr485-peterpaker7s-projects.vercel.app",
+    "https://nexaireferraltracking1-amxbs9b50-peterpaker7s-projects.vercel.app",
+    "*.vercel.app"
   ], 
   methods: ["GET", "POST", "PUT", "DELETE", "PATCH"], 
   credentials: true 
