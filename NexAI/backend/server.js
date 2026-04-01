@@ -5,47 +5,58 @@ const { body, validationResult } = require('express-validator');
 require('dotenv').config();
 
 const app = express();
-app.use(cors({ origin:["http://localhost:3000","http://127.0.0.1:3000"], methods:["GET","POST","PUT","DELETE","PATCH"], credentials:true }));
+
+// CORS configuration
+app.use(cors({ 
+  origin: ["http://localhost:3000", "http://127.0.0.1:3000", "https://*.onrender.com"], 
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH"], 
+  credentials: true 
+}));
 app.use(express.json());
 
+// Database connection with better error handling
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
+  ssl: process.env.DATABASE_URL ? { rejectUnauthorized: false } : undefined,
 });
 
-// ✅ ADD THIS ROOT ROUTE HERE (after middleware, before risk engine)
+// Test database connection without crashing the app
+if (process.env.DATABASE_URL) {
+  pool.connect((err, client, release) => {
+    if (err) {
+      console.error('❌ Database connection failed:', err.message);
+    } else {
+      console.log('✅ Database connected successfully');
+      release();
+    }
+  });
+} else {
+  console.warn('⚠️  DATABASE_URL not set - app will run without database');
+}
+
+// Root endpoint - shows API status
 app.get('/', (req, res) => {
   res.json({
     name: 'NexAI Backend API',
     version: 'v5',
     status: 'running',
+    database: process.env.DATABASE_URL ? 'configured' : 'missing',
     endpoints: {
-      patients: {
-        list: 'GET /patients',
-        create: 'POST /patients',
-        get: 'GET /patients/:id',
-        delete: 'DELETE /patients/:id'
-      },
-      visits: {
-        create: 'POST /visits',
-        list: 'GET /visits/:patient_id',
-        verify: 'PATCH /visits/:id/verify'
-      },
-      referrals: {
-        create: 'POST /referrals',
-        list: 'GET /referrals/:patient_id',
-        update: 'PATCH /referrals/:id/status'
-      },
-      dashboard: {
-        stats: 'GET /dashboard/stats',
-        highRisk: 'GET /dashboard/high-risk',
-        pendingReferrals: 'GET /dashboard/pending-referrals',
-        highPriority: 'GET /dashboard/high-priority',
-        delayedReferrals: 'GET /dashboard/delayed-referrals',
-        unverifiedVisits: 'GET /dashboard/unverified-visits',
-        dueSoon: 'GET /dashboard/due-soon'
-      },
-      health: 'GET /health'
-    }
+      health: '/health',
+      stats: '/dashboard/stats',
+      patients: '/patients'
+    },
+    time: new Date().toISOString()
+  });
+});
+
+// Health check endpoint
+app.get('/health', (req, res) => {
+  res.json({
+    status: 'ok',
+    service: 'NexAI v5',
+    database: process.env.DATABASE_URL ? 'configured' : 'missing',
+    timestamp: new Date().toISOString()
   });
 });
 
