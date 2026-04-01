@@ -233,6 +233,8 @@ const CSS = `
   .section-divider{height:1px;background:var(--border);margin:4px 0}
 `;
 
+console.log("API VALUE:", API);
+
 // ── API ──
 const apiGet = async (p) => { try{const r=await fetch(API+p);return await r.json();}catch{return null;}};
 const apiPost = async (p,b) => { try{const r=await fetch(API+p,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(b)});return await r.json();}catch{return null;}};
