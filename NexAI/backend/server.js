@@ -6,39 +6,13 @@ require('dotenv').config();
 
 const app = express();
 
-// CORS configuration 
-const cors = require('cors');
+// CORS - Allow all origins
 app.use(cors({
-  origin: [
-    "https://nexaireferraltracking1-ex88kxlzw-peterpaker7s-projects.vercel.app"
-  ]
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-app.use(express.json());
-
-app.use(cors({
-  origin: function(origin, callback) {
-    // Allow requests with no origin (like mobile apps or curl)
-    if (!origin) return callback(null, true);
-    
-    // Check if origin is allowed
-    const isAllowed = allowedOrigins.some(allowed => {
-      if (allowed instanceof RegExp) {
-        return allowed.test(origin);
-      }
-      return allowed === origin;
-    });
-    
-    if (isAllowed) {
-      callback(null, true);
-    } else {
-      console.log('Blocked origin:', origin);
-      callback(null, true); // Still allow for testing
-    }
-  },
-  methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
-  credentials: true
-}));
 app.use(express.json());
 
 // Database connection with better error handling
