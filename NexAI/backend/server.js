@@ -6,12 +6,14 @@ require('dotenv').config();
 
 const app = express();
 
-// CORS configuration - Allow all origins (temporary fix)
+// CORS configuration - Allow all
 app.use(cors({
-  origin: true,  // This allows any origin
-  methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
-  credentials: true
-}));;
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
+app.use(express.json());
 
 app.use(cors({
   origin: function(origin, callback) {
