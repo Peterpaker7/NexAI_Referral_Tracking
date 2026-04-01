@@ -10,9 +10,43 @@ app.use(express.json());
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  ssl: {
-    rejectUnauthorized: false
-  }
+});
+
+// ✅ ADD THIS ROOT ROUTE HERE (after middleware, before risk engine)
+app.get('/', (req, res) => {
+  res.json({
+    name: 'NexAI Backend API',
+    version: 'v5',
+    status: 'running',
+    endpoints: {
+      patients: {
+        list: 'GET /patients',
+        create: 'POST /patients',
+        get: 'GET /patients/:id',
+        delete: 'DELETE /patients/:id'
+      },
+      visits: {
+        create: 'POST /visits',
+        list: 'GET /visits/:patient_id',
+        verify: 'PATCH /visits/:id/verify'
+      },
+      referrals: {
+        create: 'POST /referrals',
+        list: 'GET /referrals/:patient_id',
+        update: 'PATCH /referrals/:id/status'
+      },
+      dashboard: {
+        stats: 'GET /dashboard/stats',
+        highRisk: 'GET /dashboard/high-risk',
+        pendingReferrals: 'GET /dashboard/pending-referrals',
+        highPriority: 'GET /dashboard/high-priority',
+        delayedReferrals: 'GET /dashboard/delayed-referrals',
+        unverifiedVisits: 'GET /dashboard/unverified-visits',
+        dueSoon: 'GET /dashboard/due-soon'
+      },
+      health: 'GET /health'
+    }
+  });
 });
 
 // ════════════════════════════════
