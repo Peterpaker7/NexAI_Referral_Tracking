@@ -4,14 +4,14 @@ module.exports = function(app) {
   app.use(
     '/patients',
     createProxyMiddleware({
-      target: 'http://127.0.0.1:5000',
+      target: 'https://nexai-referral-tracking-1.onrender.com',
       changeOrigin: true,
     })
   );
   app.use(
     '/visits',
     createProxyMiddleware({
-      target: 'http://127.0.0.1:5000',
+      target: 'https://nexai-referral-tracking-1.onrender.com',
       changeOrigin: true,
     })
   );
