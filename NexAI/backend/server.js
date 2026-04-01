@@ -6,11 +6,13 @@ require('dotenv').config();
 
 const app = express();
 
-// CORS configuration - Allow all
+// CORS configuration 
+const cors = require('cors');
 app.use(cors({
-  origin: '*',
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  origin: [
+    "http://localhost:3000",
+    "https://nexaireferraltracking1-ex88kxlzw-peterpaker7s-projects.vercel.app"
+  ]
 }));
 
 app.use(express.json());
