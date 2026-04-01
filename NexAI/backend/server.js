@@ -398,17 +398,11 @@ app.get('/dashboard/stats',async(req,res)=>{
   } catch(err){ res.status(500).json({success:false,message:'Server error'}); }
 });
 
-// Root endpoint
-app.get('/', (req, res) => {
-  res.json({
-    message: '🚀 NexAI Backend API is running!',
-    version: '1.0.0',
-    status: 'active',
-    endpoints: {
-      health: '/health',
-      test: '/api/test',
-      // Add your other endpoints here
-    },
-    documentation: 'https://github.com/Peterpaker7/NexAI_Referral_Tracking'
-  });
+// ============================================
+// START SERVER - ADD THIS AT THE VERY END
+// ============================================
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`🚀 NexAI Backend v5 running on port ${PORT}`);
+  console.log(`📊 Database: ${process.env.DATABASE_URL ? 'Configured ✓' : 'Missing ✗'}`);
 });
