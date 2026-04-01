@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "proxy": "http://127.0.0.1:5000",
+  "proxy": "https://nexai-referral-tracking-1.onrender.com",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
