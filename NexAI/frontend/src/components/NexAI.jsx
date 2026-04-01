@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 
-const API = process.env.REACT_APP_API_URL || 'https://nexai-referral-tracking-1.onrender.com';
+const API = 'https://nexai-referral-tracking-1.onrender.com';
+console.log('🚀 API URL:', API);
 
 // ── UTILS ──
 const calcEDD = (lmp) => { if (!lmp) return ""; const d = new Date(lmp); d.setDate(d.getDate()+280); return d.toLocaleDateString("en-IN",{day:"2-digit",month:"short",year:"numeric"}); };
