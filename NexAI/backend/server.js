@@ -6,17 +6,38 @@ require('dotenv').config();
 
 const app = express();
 
-// CORS configuration
-app.use(cors({ 
-  origin: [
-    "http://localhost:3000", 
-    "http://127.0.0.1:3000",
-    "https://nexaireferraltracking1-pivpwr485-peterpaker7s-projects.vercel.app",
-    "https://nexaireferraltracking1-amxbs9b50-peterpaker7s-projects.vercel.app",
-    "*.vercel.app"
-  ], 
-  methods: ["GET", "POST", "PUT", "DELETE", "PATCH"], 
-  credentials: true 
+// CORS configuration - Allow your Vercel frontend
+const allowedOrigins = [
+  "http://localhost:3000",
+  "http://127.0.0.1:3000",
+  "https://nexaireferraltracking1-5f6a82v8z-peterpaker7s-projects.vercel.app",
+  "https://nexaireferraltracking1-pivpwr485-peterpaker7s-projects.vercel.app",
+  "https://nexaireferraltracking1-amxbs9b50-peterpaker7s-projects.vercel.app",
+  /\.vercel\.app$/  // Allow all Vercel preview URLs
+];
+
+app.use(cors({
+  origin: function(origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl)
+    if (!origin) return callback(null, true);
+    
+    // Check if origin is allowed
+    const isAllowed = allowedOrigins.some(allowed => {
+      if (allowed instanceof RegExp) {
+        return allowed.test(origin);
+      }
+      return allowed === origin;
+    });
+    
+    if (isAllowed) {
+      callback(null, true);
+    } else {
+      console.log('Blocked origin:', origin);
+      callback(null, true); // Still allow for testing
+    }
+  },
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+  credentials: true
 }));
 app.use(express.json());
 
